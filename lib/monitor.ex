@@ -8,7 +8,6 @@ defmodule Monitor do
 
     # Define workers and child supervisors to be supervised
     children = [
-      Monitor.Connection,
       Monitor.Fluxter.child_spec([])
     ]
 
