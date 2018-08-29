@@ -3,8 +3,8 @@ defmodule Monitor.Fluxter do
 
   @behaviour :vmstats_sink
 
-  def collect(type, name, value, opts \\ [tags: [host: "fotografiska-dev"]]) do
-    action_name =  List.last(name)
+  def collect(type, name, value, opts) do
+    config = cfg()    
 
     {name_, topic} = case name do
       [[[_, _], n, _], _, _, a] -> {n, a}
@@ -15,10 +15,14 @@ defmodule Monitor.Fluxter do
     field = topic || "total"
     measurement = "erlvm_" <> List.to_string(name_)
 
-    #write(measurement, opts[:tags], [{field, value}])
+    write(measurement, [host: config[:hostname], environment: config[:environment]], [{field, value}])
   end
 
   def error do
     Map.get!(%{test: "test"}, :test_two)
+  end
+
+  defp cfg do
+    Application.get_env(:monitor, :settings)
   end
 end
