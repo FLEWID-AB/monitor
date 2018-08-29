@@ -3,8 +3,8 @@ defmodule Monitor.Fluxter do
 
   @behaviour :vmstats_sink
 
-  def collect(type, name, value, opts) do
-    config = cfg()    
+  def collect(type, name, value, opts \\ []) do
+    config = cfg()
 
     {name_, topic} = case name do
       [[[_, _], n, _], _, _, a] -> {n, a}
