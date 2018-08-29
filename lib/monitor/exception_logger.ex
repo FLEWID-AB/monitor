@@ -42,7 +42,7 @@ defmodule Monitor.ExceptionLogger do
       [error|stack_nice] = format_stack(substack)
 
       fields =
-       [{"exception", "#{inspect(exception,   limit: :infinity)}"},
+       [{"exception", "#{inspect(exception,   limit: :infinity) |> String.replace("\"", "'") |> String.replace("\\n", "")}"},
         {"module",    "#{inspect(module,      limit: :infinity)}"},
         {"error",     "#{error}"},
         {"stack",     "#{Enum.join(stack_nice, "<br>")}"}]
