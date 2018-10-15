@@ -19,7 +19,7 @@ defmodule Monitor.Fluxter do
   end
 
   def error do
-    Map.get!(%{test: "test"}, :test_two)
+    Map.fetch!(%{test: "test"}, :test_two)
   end
 
   defp cfg do

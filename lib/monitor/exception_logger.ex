@@ -47,8 +47,10 @@ defmodule Monitor.ExceptionLogger do
         {"error",     "#{error}"},
         {"stack",     "#{Enum.join(stack_nice, "<br>")}"}]
 
-      IO.puts("Sending Error to Telegraf #{inspect(fields)}")
-      Monitor.Fluxter.write("app_exceptions", [host: config[:hostname], environment: config[:environment]], fields)
+      name = Application.get_env(:monitor, :settings)[:exception_series_name] || "elixir_exceptions"
+
+      #IO.puts("Sending #{name} to Telegraf #{inspect(fields)}")
+      Monitor.Fluxter.write(name, [host: config[:hostname], environment: config[:environment]], fields)
     rescue
       ex ->
         Logger.warn(fn -> "Unable to notify due to #{inspect(ex)}! #{inspect(message)}" end)
