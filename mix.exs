@@ -15,7 +15,8 @@ defmodule Monitor.MixProject do
   def application do
     [
       mod: {Monitor, []},
-      extra_applications: [:logger, :hackney, :instream, :vmstats, :fluxter]
+      included_applications: [:vmstats, :fluxter, :instream],
+      extra_applications: [:logger, :hackney]
     ]
   end
 

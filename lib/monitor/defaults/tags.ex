@@ -2,8 +2,8 @@ defmodule Monitor.Metric.Tags do
 
   def defaults do
     [
-      host: Application.get_env(:monitor, :settings)[:hostname],
-      environment:  Application.get_env(:monitor, :settings)[:environment]
+      environment:  Application.get_env(:monitor, :settings)[:environment],
+      application:  Application.get_env(:monitor, :settings)[:application_name]
     ]
   end
 

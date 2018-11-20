@@ -31,8 +31,7 @@ defmodule Monitor.ExceptionLogger do
 
   def handle_call({:configure, new_keys}, _state), do: {:ok, :ok, new_keys}
 
-  def handle_event({:error_report, _gl, {_pid, _type, [message | _]}}, state)
-      when is_list(message) do
+  def handle_event({:error_report, _gl, {_pid, _type, [message | _]}}, state) when is_list(message) do
     try do
       config = cfg()
       {kind, exception, substack, stack, module} =
@@ -42,15 +41,18 @@ defmodule Monitor.ExceptionLogger do
       [error|stack_nice] = format_stack(substack)
 
       fields =
-       [{"exception", "#{inspect(exception,   limit: :infinity) |> String.replace("\"", "'") |> String.replace("\\n", "")}"},
-        {"module",    "#{inspect(module,      limit: :infinity)}"},
-        {"error",     "#{error}"},
-        {"stack",     "#{Enum.join(stack_nice, "<br>")}"}]
+       [{"error", "#{inspect(exception,   limit: :infinity) |> String.replace("\"", "'") |> String.replace("\\n", "")} in #{inspect(module,      limit: :infinity)}"},
+        {"trace",     "#{error}<br>#{Enum.join(stack_nice, "<br>")}"}]
 
-      name = Application.get_env(:monitor, :settings)[:exception_series_name] || "elixir_exceptions"
+      name = Application.get_env(:monitor, :settings)[:exception_series_name] || "exceptions"
 
-      #IO.puts("Sending #{name} to Telegraf #{inspect(fields)}")
-      Monitor.Fluxter.write(name, [host: config[:hostname], environment: config[:environment]], fields)
+      tags = [
+
+      ] |> Monitor.Metric.Tags.with_defaults()
+
+
+      IO.puts("Sending #{name} to Telegraf #{inspect(fields)}")
+      Monitor.Fluxter.write(name, tags, fields)
     rescue
       ex ->
         Logger.warn(fn -> "Unable to notify due to #{inspect(ex)}! #{inspect(message)}" end)
