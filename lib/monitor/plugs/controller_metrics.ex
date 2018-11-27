@@ -1,6 +1,6 @@
 defmodule Monitor.Plug.ControllerMetrics do
   @behaviour Plug
-  import Plug.Conn, only: [register_before_send: 2]
+  #import Plug.Conn, only: [register_before_send: 2]
 
   @unit         Application.get_env(:monitor, :plug)[:unit]                   || :milli_seconds
   @metric_name  Application.get_env(:monitor, :plug)[:controller_series_name] || "request_metrics"
