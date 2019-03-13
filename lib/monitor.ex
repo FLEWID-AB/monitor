@@ -11,10 +11,14 @@ defmodule Monitor do
       Monitor.Fluxter.child_spec([])
     ]
 
-    if !(Monitor.ExceptionLogger in :gen_event.which_handlers(:error_logger)) do
-      :ok = :error_logger.add_report_handler(Monitor.ExceptionLogger)
-    end
 
-    Supervisor.start_link(children, [strategy: :one_for_one, name: Monitor.Supervisor])
+
+    {:ok, pid} = Supervisor.start_link(children, [strategy: :one_for_one, name: Monitor.Supervisor])
+
+    #if !(Monitor.ExceptionLogger in :gen_event.which_handlers(:error_logger)) do
+    #  :ok = :error_logger.add_report_handler(Monitor.ExceptionLogger)
+    #end
+
+    {:ok, pid}
   end
 end
