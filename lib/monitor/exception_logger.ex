@@ -83,7 +83,7 @@ defmodule Monitor.ExceptionLogger do
   end
 
   defp get_exception_and_stacktrace({kind, exception, stacktrace}) do
-    {kind, exception, stacktrace}
+    {kind, exception, stacktrace, []}
   end
 
   # GenServer exits will usually only report a stacktrace containing core
