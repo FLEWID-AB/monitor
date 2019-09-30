@@ -18,10 +18,9 @@ defmodule Monitor do
     #if !(Monitor.ExceptionLogger in :gen_event.which_handlers(:error_logger)) do
       :ok = :error_logger.add_report_handler(Monitor.ExceptionLogger)
     #end
-
     if(Application.get_env(:monitor, :enabled)) do
-      IO.puts("### Starting VMSTATS ###")
-      Application.start(:vmstats)
+      vm_stats = Application.start(:vmstats)
+      IO.puts("### Starting VMSTATS: #{inspect(vm_stats)}###")
     end
 
     {:ok, pid}
