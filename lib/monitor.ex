@@ -19,6 +19,11 @@ defmodule Monitor do
       :ok = :error_logger.add_report_handler(Monitor.ExceptionLogger)
     #end
 
+    if(Application.get_env(:monitor, :enabled)) do
+      IO.puts("### Starting VMSTATS ###")
+      Application.start(:vmstats)
+    end
+
     {:ok, pid}
   end
 end

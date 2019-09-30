@@ -15,7 +15,8 @@ defmodule Monitor.Fluxter do
     field = topic || "total"
     measurement = "erlvm_" <> List.to_string(name_)
 
-    write(measurement, [host: config[:hostname], environment: config[:environment]], [{field, value}])
+    # write metric to telegraf
+    write(measurement, [host: config[:hostname], application: config[:application_name], environment: config[:environment]], [{field, value}])
   end
 
   def error do
